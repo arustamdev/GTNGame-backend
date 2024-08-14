@@ -1,14 +1,9 @@
 import express from 'express';
-import fruitsRoute from './fruits';
+import trainingRoute from './training';
+import auth from '../middlewares/auth';
 
 const router = express.Router();
 
-router.get('/', (req, res) => {
-  res.json({
-    message: 'Hello from api!',
-  });
-});
-
-router.use('/fruits', fruitsRoute);
+router.use('/training', auth, trainingRoute);
 
 export default router;

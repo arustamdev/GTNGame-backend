@@ -1,0 +1,17 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Training {
+  id        Int      @id @default(autoincrement())
+  tgId      Int      @unique
+  guessInt  String   @db.VarChar(4)
+  finished  Boolean
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

@@ -5,6 +5,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import http from 'http';
 import { Server } from 'socket.io';
+import crypto from 'crypto';
 
 import api from './api';
 import errorHandler from './errorHandler';
@@ -22,7 +23,10 @@ const io = new Server(server, {
 });
 
 io.on('connection', (socket) => {
-  console.log(`a user connected: ${socket.id}`);
+  console.log(`[${socket.id}]: connected`);
+  socket.on('disconnect', () => {
+    console.log(`[${socket.id}]: disconnected`);
+  });
 });
 
 setPlayersOnlineEvent(io);
@@ -32,7 +36,7 @@ app.use(helmet());
 app.use(cors());
 app.use(express.json());
 
-app.use('/api/v1', api);
+app.use('/api', api);
 
 app.use(errorHandler);
 
