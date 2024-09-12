@@ -12,6 +12,7 @@ import errorHandler from './errorHandler';
 
 import setPlayersOnlineEvent from './events/playersOnline';
 import validateTelegramData from './utils/auth';
+import findMatch from './events/findMatch';
 
 dotenv.config();
 
@@ -43,6 +44,12 @@ io.use((socket, next) => {
 
 io.on('connection', (socket) => {
   console.log(`[${socket.id}]: connected`);
+
+  //events
+  socket.on('findMatch', async () => {
+    await findMatch(socket);
+  });
+
   socket.on('disconnect', () => {
     console.log(`[${socket.id}]: disconnected`);
   });
