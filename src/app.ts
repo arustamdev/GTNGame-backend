@@ -11,6 +11,7 @@ import api from './api';
 import errorHandler from './errorHandler';
 
 import setPlayersOnlineEvent from './events/playersOnline';
+import validateTelegramData from './utils/auth';
 
 dotenv.config();
 
@@ -20,6 +21,24 @@ const io = new Server(server, {
   cors: {
     origin: process.env.FRONTEND_ORIGIN,
   },
+});
+
+io.use((socket, next) => {
+  const initData = socket.handshake.auth.telegram_data as string | undefined;
+
+  if (!initData) {
+    next(new Error('Bad credentials'));
+    return;
+  }
+  const user = validateTelegramData(initData);
+
+  if (!user) {
+    next(new Error('Bad credentials'));
+    return;
+  }
+
+  socket.data.user = user;
+  next();
 });
 
 io.on('connection', (socket) => {
