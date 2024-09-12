@@ -1,8 +1,11 @@
 import { Request } from 'express';
 
 export interface AuthorisedRequest extends Request {
-  user?: {
-    id: number;
-    username: string;
-  };
+  user?: TelegramUser;
+}
+
+// TODO: update interface to include all data
+export interface TelegramUser {
+  id: number;
+  username: string;
 }
