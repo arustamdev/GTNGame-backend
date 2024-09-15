@@ -13,6 +13,7 @@ import errorHandler from './errorHandler';
 import setPlayersOnlineEvent from './events/playersOnline';
 import validateTelegramData from './utils/auth';
 import findMatch from './events/findMatch';
+import { runMatchmakingWorker } from './workers/matchmaking';
 
 dotenv.config();
 
@@ -56,6 +57,7 @@ io.on('connection', (socket) => {
 });
 
 setPlayersOnlineEvent(io);
+runMatchmakingWorker(io);
 
 app.use(morgan('dev'));
 app.use(helmet());

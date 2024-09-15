@@ -12,9 +12,16 @@ async function findMatch(socket: Socket) {
     user,
   };
 
-  await matchmakingQueue.add('player', player);
+  const job = await matchmakingQueue.getJob(socket.id);
+  if (job) {
+    return;
+  }
 
-  console.log(await matchmakingQueue.getWaiting());
+  await matchmakingQueue.add('player', player, {
+    removeOnComplete: true,
+    removeOnFail: true,
+    jobId: socket.id,
+  });
 }
 
 export default findMatch;

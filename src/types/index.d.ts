@@ -9,3 +9,8 @@ export interface TelegramUser {
   id: number;
   username: string;
 }
+
+export interface JobData {
+  socketId: string;
+  user: TelegramUser;
+}
